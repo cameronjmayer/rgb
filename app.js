@@ -1,33 +1,47 @@
+//sets the variable number of squares to 6//
 var numSquares = 6;
+//Determines the colors//
 var colors = [];
+//placeholder variable for the correct color option//
 var pickedColor;
+//squares means all the square classes//
 var squares = document.querySelectorAll(".square");
+//Determines the color of an element//
 var colorDisplay = document.getElementById("colorDisplay");
+//displays the message variable in element id "message"//
 var messageDisplay = document.querySelector("#message");
+//h1 means manipulate h1//
 var h1 = document.querySelector("h1");
+//Will activate the effect from the reset id//
 var resetButton = document.querySelector("#reset");
+//Will change the mode base don the class "mode"//
 var modeButtons = document.querySelectorAll(".mode");
+//Default score is 0//
 var score = 0; 
+//the Scor dispay is connected to the id "scoreDisplay"//
 var scoreDisplay = document.querySelector("#scoreDisplay"); 
+//if the reset button is pressed, the function will happen//
 var resetPressed = true; 
 
-
+//Initiates the page//
 init();
 
+//prints mode buttons, squares, and sets the score//
 function init(){
 	setupModeButtons();
 	setupSquares();
-	var lsScore = localStorage.getItem('score');
+	var lsScore = sessionStorage.getItem('score');
 	if( lsScore !== null ){
 		score = lsScore; 
 		scoreDisplay.textContent = score;
 	}
 	else {
-		localStorage.setItem('score', score); 
+		sessionStorage.setItem('score', score); 
 	}
 	reset();
 }
 
+//sets the mode buttons to the page//
 function setupModeButtons(){
 	for(var i = 0; i < modeButtons.length; i++){
 		modeButtons[i].addEventListener("click", function(){
@@ -40,6 +54,7 @@ function setupModeButtons(){
 	}
 }
 
+//sets the squares up in the page//
 function setupSquares(){
 	for(var i = 0; i < squares.length; i++){
 	//add click listeners to squares
@@ -59,19 +74,19 @@ function setupSquares(){
 					resetPressed = false;
 				}
 				scoreDisplay.textContent = score;
-				localStorage.setItem('score', score);
+				sessionStorage.setItem('score', score);
 			} else {
 				this.style.background = "#232323";
 				messageDisplay.textContent = "Try Again"
 				score--;
 				scoreDisplay.textContent = score; 
-				localStorage.setItem('score', score);
+				sessionStorage.setItem('score', score);
 			}
 		});
 	}
 }
 
-
+//Changes the color name when correctly clicked//
 async function updateColorName(){
 	const regex = /\([^\)]+\)/g; 
 	var rgbColors = pickedColor.match(regex); 
@@ -91,7 +106,7 @@ async function updateColorName(){
 		colorDisplay.textContent = colorData.name.value + "-ish"; 
 	}
 }
-
+//when pressed, resets the square's colors, as well as the new picked color and question//
 function reset(){
 	resetPressed = true;
 	colors = generateRandomColors(numSquares);
@@ -117,6 +132,7 @@ resetButton.addEventListener("click", function(){
 	reset();
 })
 
+//Changes the cool of the square//
 function changeColors(color){
 	//loop through all squares
 	for(var i = 0; i < squares.length; i++){
@@ -124,12 +140,12 @@ function changeColors(color){
 		squares[i].style.background = color;
 	}
 }
-
+//Randomly selects a color//
 function pickColor(){
 	var random = Math.floor(Math.random() * colors.length);
 	return colors[random];
 }
-
+//Generates random colors for the squares//
 function generateRandomColors(num){
 	//make an array
 	var arr = []
@@ -141,7 +157,7 @@ function generateRandomColors(num){
 	//return that array
 	return arr;
 }
-
+//ranodomizes a color from a list//
 function randomColor(){
 	//pick a "red" from 0 - 255
 	var r = Math.floor(Math.random() * 256);
